@@ -25,36 +25,23 @@ class ParserUtils extends RegexParsers {
 
         override def atEnd: Boolean = self.atEnd
 
-        override def pos: Position = new LowerCasePosition(self.pos)
+        override def pos: Position = self.pos
 
         override def rest: Reader[Char] = new LowerCaseReader(self)
-
-        class LowerCasePosition(val self: Position) extends Position {
-          override def line: Int = self.line
-
-          override def column: Int = self.column
-
-          override protected def lineContents: String = self.lineContents.toLowerCase
-
-          override def toString = self.toString()
-
-          override def longString = self.longString
-
-          override def <(that: Position) = self.<(that)
-        }
-
       }
 
       parser.apply(new LowerCaseReader(in))
     }
   }
 
-
   def decimalNumber: Parser[String] = """-?\d+""".r
 
   def binaryNumber: Parser[String] = "0b" ~> """[01]+""".r
 
-  def hexNumber: Parser[String] = "0b" ~> """[0-9a-fA-F]+""".r
+  def hexNumber: Parser[String] =
+    """-?""".r ~ ("0x" ~> """[0-9a-fA-F]+""".r) ^^ {
+      case a ~ b => s"$a$b"
+    }
 
   def intType: Parser[Int] = (
     binaryNumber ^^ (Integer.parseInt(_, 2))
