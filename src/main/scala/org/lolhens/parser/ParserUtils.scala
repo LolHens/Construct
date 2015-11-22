@@ -52,15 +52,9 @@ class ParserUtils extends RegexParsers {
 
   def decimalNumber: Parser[String] = """-?\d+""".r
 
-  def binaryNumber: Parser[String] =
-    """-?""".r ~ ("0b" ~> """[01]+""".r) ^^ {
-      case a ~ b => s"$a$b"
-    }
+  def binaryNumber: Parser[String] = "0b" ~> """[01]+""".r
 
-  def hexNumber: Parser[String] =
-    """-?""".r ~ ("0b" ~> """[0-9a-fA-F]+""".r) ^^ {
-      case a ~ b => s"$a$b"
-    }
+  def hexNumber: Parser[String] = "0b" ~> """[0-9a-fA-F]+""".r
 
   def intType: Parser[Int] = (
     binaryNumber ^^ (Integer.parseInt(_, 2))
