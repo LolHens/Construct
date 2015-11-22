@@ -52,13 +52,19 @@ class ParserUtils extends RegexParsers {
 
   def decimalNumber: Parser[String] = """-?\d+""".r
 
-  def binaryNumber: Parser[String] = "[01]+".r
+  def binaryNumber: Parser[String] =
+    """-?""".r ~ ("0b" ~> """[01]+""".r) ^^ {
+      case a ~ b => s"$a$b"
+    }
 
-  def hexNumber: Parser[String] = "[0-9a-fA-F]+".r
+  def hexNumber: Parser[String] =
+    """-?""".r ~ ("0b" ~> """[0-9a-fA-F]+""".r) ^^ {
+      case a ~ b => s"$a$b"
+    }
 
   def intType: Parser[Int] = (
-    "0b" ~> binaryNumber ^^ (Integer.parseInt(_, 2))
-      | "0x" ~> hexNumber ^^ ((hexNum) => Integer.parseInt("0" + hexNum, 16))
+    binaryNumber ^^ (Integer.parseInt(_, 2))
+      | hexNumber ^^ ((hexNum) => Integer.parseInt(if (hexNum.startsWith("-")) "-0" + hexNum.drop(1) else "0" + hexNum, 16))
       | decimalNumber ^^ (_.toInt)
     )
 
@@ -87,8 +93,6 @@ class ParserUtils extends RegexParsers {
   }
 
   protected def quote(string: String) = if (string == "") "" else Pattern.quote(string)
-
-  implicit def stringToStringList(string: String): List[String] = List(string)
 
   implicit def parserToRichParser(parser: Parser[String]) = new RichStringParser(parser)
 
