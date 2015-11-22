@@ -1,0 +1,6 @@
+primitive_types: Int, Bool, Float
+Option
+return
+if
+break
+continue
