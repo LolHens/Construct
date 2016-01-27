@@ -1,6 +1,21 @@
 primitive_types: Int, Bool, Float
-Option
+Option (nullable)
 return
 if
 break
 continue
+
+priority:
+if
+primitive types
+
+
+{
+val | expr
+}
+
+val = "val" text "=" expr
+
+expr = blockWith | blockWithEval
+
+val = expr: UNIT????
