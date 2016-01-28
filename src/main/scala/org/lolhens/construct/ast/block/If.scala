@@ -1,5 +1,6 @@
 package org.lolhens.construct.ast.block
 
+import org.lolhens.construct.ast.expr.Field
 import org.lolhens.construct.ast.tpe.Type
 
 /**
