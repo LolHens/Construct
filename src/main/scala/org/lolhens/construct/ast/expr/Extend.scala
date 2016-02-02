@@ -6,5 +6,7 @@ import org.lolhens.construct.ast.tpe.Type
 /**
   * Created by Pierre on 27.01.2016.
   */
-class Extend(a: Block, b: Block) extends Expr { //ITSELF A BLOCK??
+class Extend(val a: Block,
+             val b: Block) extends Expr { //ITSELF A BLOCK?? NOOOOO Dynamic!!!
+  override def returnType: Block = ???
 }

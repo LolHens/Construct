@@ -1,15 +1,17 @@
 package org.lolhens.construct.ast.block
 
-import org.lolhens.construct.ast.expr.{Field, Expr}
-import org.lolhens.construct.ast.tpe.{Unit, Type}
+import org.lolhens.construct.ast.expr.{Expr, Field}
+import org.lolhens.construct.ast.tpe.Type
 
 /**
   * Created by LolHens on 18.11.2015.
   */
 abstract class Block extends Expr {
-  def fields: List[Field] = Nil
+  val fields: List[Field] = Nil
 
-  def tpe: Type = Unit
+  val body: List[Block] = Nil
+
+  def returnType: Block = body.lastOption.getOrElse(Unit)
 
   def isFinal = false
 }

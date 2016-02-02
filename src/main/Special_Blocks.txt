@@ -4,6 +4,7 @@ return
 if
 break
 continue
+throw
 
 priority:
 if
@@ -19,3 +20,11 @@ val = "val" text "=" expr
 expr = blockWith | blockWithEval
 
 val = expr: UNIT????
+
+
+Typesystem special cases:
+Nothing,
+Unit,
+Void,
+And?,
+Or?
