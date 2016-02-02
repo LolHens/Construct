@@ -1,7 +1,6 @@
 package org.lolhens.construct.ast.expr
 
-import org.lolhens.construct.ast.block.Block
-import org.lolhens.construct.ast.block.Unit
+import org.lolhens.construct.ast.block.{Block, Unit}
 
 
 /**
