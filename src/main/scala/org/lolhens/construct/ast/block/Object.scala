@@ -10,5 +10,5 @@ class Object extends Block {
 
   override def returnType: Block = body.last.returnType
 
-  override def fields: List[Field] = ???
+  override val fields: List[Field] = ???
 }
