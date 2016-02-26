@@ -87,6 +87,13 @@ class ParserUtils extends RegexParsers {
     def ~~>[U](q: => Parser[U]): Parser[U] = (self ~ whiteSpace) ~> q
 
     def <~~[U](q: => Parser[U]): Parser[String] = self <~ (whiteSpace ~ q)
+
+
+    def ~?~[U](q: => Parser[U]): Parser[~[String, U]] = self ~ (opt(whiteSpace) ~> q)
+
+    def ~?>[U](q: => Parser[U]): Parser[U] = (self ~ opt(whiteSpace)) ~> q
+
+    def <?~[U](q: => Parser[U]): Parser[String] = self <~ (opt(whiteSpace) ~ q)
   }
 
 }
