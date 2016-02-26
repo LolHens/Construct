@@ -75,25 +75,25 @@ class ParserUtils extends RegexParsers {
 
   protected def quote(string: String) = if (string == "") "" else Pattern.quote(string)
 
-  implicit def parserToRichParser(parser: Parser[String]) = new RichStringParser(parser)
+  implicit def parserToRichParser[V](parser: Parser[V]) = new RichParser[V](parser)
 
-  implicit def literalToRichParser(s: String): RichStringParser = new RichStringParser(literal(s))
+  implicit def literalToRichParser(s: String): RichParser[String] = new RichParser(literal(s))
 
-  implicit def regexToRichParser(r: Regex): RichStringParser = new RichStringParser(regex(r))
+  implicit def regexToRichParser(r: Regex): RichParser[String] = new RichParser(regex(r))
 
-  class RichStringParser(val self: Parser[String]) {
-    def ~~[U](q: => Parser[U]): Parser[~[String, U]] = self ~ (whiteSpace ~> q)
+  class RichParser[V](val self: Parser[V]) {
+    def ~~[U](q: => Parser[U]): Parser[~[V, U]] = self ~ (whiteSpace ~> q)
 
     def ~~>[U](q: => Parser[U]): Parser[U] = (self ~ whiteSpace) ~> q
 
-    def <~~[U](q: => Parser[U]): Parser[String] = self <~ (whiteSpace ~ q)
+    def <~~[U](q: => Parser[U]): Parser[V] = self <~ (whiteSpace ~ q)
 
 
-    def ~?~[U](q: => Parser[U]): Parser[~[String, U]] = self ~ (opt(whiteSpace) ~> q)
+    def ~?~[U](q: => Parser[U]): Parser[~[V, U]] = self ~ (opt(whiteSpace) ~> q)
 
     def ~?>[U](q: => Parser[U]): Parser[U] = (self ~ opt(whiteSpace)) ~> q
 
-    def <?~[U](q: => Parser[U]): Parser[String] = self <~ (opt(whiteSpace) ~ q)
+    def <?~[U](q: => Parser[U]): Parser[V] = self <~ (opt(whiteSpace) ~ q)
   }
 
 }

@@ -1,6 +1,6 @@
 package org.lolhens.construct.parser
 
-import org.lolhens.construct.ast.unresolved.{Reference, Definition, Value}
+import org.lolhens.construct.ast.unresolved.{UnitVal, Reference, Definition, Value}
 import org.lolhens.parser.ParserUtils
 
 /**
@@ -28,6 +28,10 @@ object ConstructParser extends ParserUtils {
       def `type`: Parser[Unit] = ???
     }
 
+    def insnList: Parser[List[Any]] = opt(rep1sep(insn, ";" | "\n")) ^^ {
+      case Some(exprList) => exprList
+      case None => List(UnitVal)
+    }
 
     def expr: Parser[Any] = Expr.ref | Expr.`def`
 
@@ -36,12 +40,12 @@ object ConstructParser extends ParserUtils {
         case e => Reference(e)
       }
 
-      def `def`: Parser[Unit] = Def.block | Def.eval
+      def `def`: Parser[Any] = Def.block | Def.eval
 
       object Def {
-        def block: Parser[Unit] = ???
+        def block: Parser[Any] = "{" ~?> insnList <?~ "}"
 
-        def eval: Parser[Unit] = ???
+        def eval: Parser[Any] = "(" ~?> insnList <?~ ")"
       }
 
       def impl: Parser[Unit] = Impl.block | Impl.eval
@@ -65,21 +69,9 @@ object ConstructParser extends ParserUtils {
 
   def block: Parser[Unit] = blockDef | blockRef
 
-  def blockDef: Parser[Unit] = "{" ~> exprList <~ "}"
+  def blockDef: Parser[Unit] =
 
   def blockDefEval: Parser[Unit] = "(" ~> exprList <~ ")"
-
-  def blockRef: Parser[Unit] = ???
-
-  def exprList: Parser[Unit] = opt(rep1sep(insn, ";" | "\n")) ^^ {
-    case Some(exprList) => exprList
-    case None => ??? // UNIT
-  }
-
-
-  def valDef: Parser[Unit] = ???
-
-  def varDef: Parser[Unit] = ???
 
 
 }
