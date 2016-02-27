@@ -65,13 +65,4 @@ object ConstructParser extends ParserUtils {
   object Type {
 
   }
-
-
-  def block: Parser[Unit] = blockDef | blockRef
-
-  def blockDef: Parser[Unit] =
-
-  def blockDefEval: Parser[Unit] = "(" ~> exprList <~ ")"
-
-
 }
